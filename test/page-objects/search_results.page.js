@@ -1,13 +1,15 @@
 import { Page } from 'page-objects/page'
 
 class SearchResultsPage extends Page {
-  // getters
+  // getters movements
   get heading() {
     return $('h1')
   }
 
   get mrn() {
-    return $('#main-content > div > div > dl:nth-child(4) > div:nth-child(1) > dd')
+    return $(
+      '#main-content > div > div > dl:nth-child(4) > div:nth-child(1) > dd'
+    )
   }
 
   get status() {
@@ -42,28 +44,86 @@ class SearchResultsPage extends Page {
     return $('#main-content > div > div > table > tbody > tr > td:nth-child(7)')
   }
 
-  async getTableHeadings() {
-    const headers = []
-    let headings = await $$('#main-content > div > div > table > thead tr th')
+  // getters import notifications
 
-    await headings.forEach(async element => {
+  get chedReference(){
+    return $('#main-content > div > div > dl:nth-child(7) > div:nth-child(1) > dd') 
+  }
+
+  get chedStatus(){
+    return $('#main-content > div > div > dl:nth-child(7) > div:nth-child(2) > dd')
+  }
+
+  // ched actions
+
+  async getChedTableHeadings() {
+    const headers = []
+    const headings = await $$('#main-content > div > div > dl:nth-child(7) div > dd')
+
+    await headings.forEach(async (element) => {
       headers.push(await element.getText())
     })
 
-    return headers;
+    return headers
+  }
+
+  async getChedTableRowIndex(index) {
+    const cellItems = []
+    const tableRowCells = await $$(
+      '#main-content > div > div > table:nth-child(8) > tbody > tr:nth-child(' +
+        index +
+        ') td'
+    )
+
+    await tableRowCells.forEach(async (tableHeading) => {
+      cellItems.push(await tableHeading.getText())
+    })
+
+    return cellItems
+  }
+
+  // movement actions
+  async getTableHeadings() {
+    const headers = []
+    const headings = await $$('#main-content > div > div > table > thead tr th')
+
+    await headings.forEach(async (element) => {
+      headers.push(await element.getText())
+    })
+
+    return headers
   }
 
   async getTableRowIndex(index) {
     const cellItems = []
-    let tableRowCells = await $$('#main-content > div > div > table > tbody > tr:nth-child('+index+') td')
+    const tableRowCells = await $$(
+      '#main-content > div > div > table > tbody > tr:nth-child(' +
+        index +
+        ') td'
+    )
 
-    await tableRowCells.forEach(async tableHeading => {
+    await tableRowCells.forEach(async (tableHeading) => {
       cellItems.push(await tableHeading.getText())
     })
 
-    return cellItems;    
+    return cellItems
   }
-    
+
+  async getHeadingRowMap(rowIndex){
+    const headingRowMap = new Map();
+
+    (await this.getTableHeadings()).forEach(async (headerItem) => {
+      (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
+        console.log("*******")
+        console.log(await headerItem)
+        console.log(await rowItem)
+        console.log("*******")
+        headingRowMap.set(await headerItem, await rowItem)
+      })
+    })
+
+    return headingRowMap;
+  }
 }
 
 export default new SearchResultsPage()
