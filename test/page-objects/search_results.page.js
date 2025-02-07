@@ -2,6 +2,7 @@ import { Page } from 'page-objects/page'
 
 class SearchResultsPage extends Page {
   // getters movements
+
   get heading() {
     return $('h1')
   }
@@ -46,19 +47,25 @@ class SearchResultsPage extends Page {
 
   // getters import notifications
 
-  get chedReference(){
-    return $('#main-content > div > div > dl:nth-child(7) > div:nth-child(1) > dd') 
+  get chedTableReference() {
+    return $(
+      '#main-content > div > div > dl:nth-child(7) > div:nth-child(1) > dd'
+    )
   }
 
-  get chedStatus(){
-    return $('#main-content > div > div > dl:nth-child(7) > div:nth-child(2) > dd')
+  get chedStatus() {
+    return $(
+      '#main-content > div > div > dl:nth-child(7) > div:nth-child(2) > dd'
+    )
   }
 
   // ched actions
 
   async getChedTableHeadings() {
     const headers = []
-    const headings = await $$('#main-content > div > div > dl:nth-child(7) div > dd')
+    const headings = await $$(
+      '#main-content > div > div > dl:nth-child(7) div > dd'
+    )
 
     await headings.forEach(async (element) => {
       headers.push(await element.getText())
@@ -83,6 +90,7 @@ class SearchResultsPage extends Page {
   }
 
   // movement actions
+
   async getTableHeadings() {
     const headers = []
     const headings = await $$('#main-content > div > div > table > thead tr th')
@@ -109,20 +117,16 @@ class SearchResultsPage extends Page {
     return cellItems
   }
 
-  async getHeadingRowMap(rowIndex){
-    const headingRowMap = new Map();
+  async getHeadingRowMap(rowIndex) {
+    const headingRowMap = new Map()(await this.getTableHeadings()).forEach(
+      async (headerItem) => {
+        (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
+          headingRowMap.set(await headerItem, await rowItem)
+        })
+      }
+    )
 
-    (await this.getTableHeadings()).forEach(async (headerItem) => {
-      (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
-        console.log("*******")
-        console.log(await headerItem)
-        console.log(await rowItem)
-        console.log("*******")
-        headingRowMap.set(await headerItem, await rowItem)
-      })
-    })
-
-    return headingRowMap;
+    return headingRowMap
   }
 }
 

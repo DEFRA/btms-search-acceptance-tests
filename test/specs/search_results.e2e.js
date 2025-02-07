@@ -9,6 +9,7 @@ import holdDocument from '../../data/movement/hold.json'
 import { expect } from '~/node_modules/@wdio/globals/build/index'
 
 describe('Search Results page', () => {
+  
   it('Should display the correct search results details for a no match clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(noMatch._id)
@@ -21,19 +22,39 @@ describe('Search Results page', () => {
       )
     )
 
-    expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(noMatch.clearanceRequests[0].items[0].itemNumber)
-    expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(noMatch.clearanceRequests[0].items[0].taricCommodityCode)
-    expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(noMatch.clearanceRequests[0].items[0].goodsDescription)
-    expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(noMatch.clearanceRequests[0].items[0].itemNetMass)
-    expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(noMatch.clearanceRequests[0].items[0].documents[0].documentReference)
+    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
+      noMatch.clearanceRequests[0].items[0].itemNumber
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
+      noMatch.clearanceRequests[0].items[0].taricCommodityCode
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+      noMatch.clearanceRequests[0].items[0].goodsDescription
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+      noMatch.clearanceRequests[0].items[0].itemNetMass
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+      noMatch.clearanceRequests[0].items[0].documents[0].documentReference
+    )
 
-    expect(SearchResultsPage.getTableRowIndex(2)[0]).toHaveText(noMatch.clearanceRequests[0].items[1].itemNumber)
-    expect(SearchResultsPage.getTableRowIndex(2)[1]).toHaveText(noMatch.clearanceRequests[0].items[1].taricCommodityCode)
-    expect(SearchResultsPage.getTableRowIndex(2)[2]).toHaveText(noMatch.clearanceRequests[0].items[1].goodsDescription)
-    expect(SearchResultsPage.getTableRowIndex(2)[3]).toHaveText(noMatch.clearanceRequests[0].items[1].itemNetMass)
-    expect(SearchResultsPage.getTableRowIndex(2)[4]).toHaveText(noMatch.clearanceRequests[0].items[1].documents[0].documentReference)
-  }),
-
+    await expect(SearchResultsPage.getTableRowIndex(2)[0]).toHaveText(
+      noMatch.clearanceRequests[0].items[1].itemNumber
+    )
+    await expect(SearchResultsPage.getTableRowIndex(2)[1]).toHaveText(
+      noMatch.clearanceRequests[0].items[1].taricCommodityCode
+    )
+    await expect(SearchResultsPage.getTableRowIndex(2)[2]).toHaveText(
+      noMatch.clearanceRequests[0].items[1].goodsDescription
+    )
+    await expect(SearchResultsPage.getTableRowIndex(2)[3]).toHaveText(
+      noMatch.clearanceRequests[0].items[1].itemNetMass
+    )
+    await expect(SearchResultsPage.getTableRowIndex(2)[4]).toHaveText(
+      noMatch.clearanceRequests[0].items[1].documents[0].documentReference
+    )
+  })
+    
   it('Should display the correct search results details for a held clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(holdDocument._id)
@@ -41,15 +62,26 @@ describe('Search Results page', () => {
     await expect(SearchResultsPage.heading).toBeDisplayed()
     await expect(SearchResultsPage.heading).toHaveText(holdDocument._id)
 
-    expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(holdDocument.clearanceRequests[0].items[0].itemNumber)
-    expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(holdDocument.clearanceRequests[0].items[0].taricCommodityCode)
-    expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(holdDocument.clearanceRequests[0].items[0].goodsDescription)
-    expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(holdDocument.clearanceRequests[0].items[0].itemNetMass)
-    expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(holdDocument.clearanceRequests[0].items[0].documents[0].documentReference)
+    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
+      holdDocument.clearanceRequests[0].items[0].itemNumber
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
+      holdDocument.clearanceRequests[0].items[0].taricCommodityCode
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+      holdDocument.clearanceRequests[0].items[0].goodsDescription
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+      holdDocument.clearanceRequests[0].items[0].itemNetMass
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+      holdDocument.clearanceRequests[0].items[0].documents[0]
+        .documentReference
+    )
 
-    //no import notification to verify details
-  }),
-  
+    // no import notification to verify details
+  })
+
   it('Should display the correct search results details for a refusal clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(refusalDoc._id)
@@ -57,18 +89,36 @@ describe('Search Results page', () => {
     await expect(SearchResultsPage.heading).toBeDisplayed()
     await expect(SearchResultsPage.heading).toHaveText(refusalDoc._id)
 
-    expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(refusalDoc.clearanceRequests[0].items[0].itemNumber)
-    expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(refusalDoc.clearanceRequests[0].items[0].taricCommodityCode)
-    expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(refusalDoc.clearanceRequests[0].items[0].goodsDescription)
-    expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(refusalDoc.clearanceRequests[0].items[0].itemNetMass)
-    expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(refusalDoc.clearanceRequests[0].items[0].documents[0].documentReference)
+    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
+      refusalDoc.clearanceRequests[0].items[0].itemNumber
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
+      refusalDoc.clearanceRequests[0].items[0].taricCommodityCode
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+      refusalDoc.clearanceRequests[0].items[0].goodsDescription
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+      refusalDoc.clearanceRequests[0].items[0].itemNetMass
+    )
+    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+      refusalDoc.clearanceRequests[0].items[0].documents[0].documentReference
+    )
 
     // ched details
-    
-    expect(SearchResultsPage.getChedTableHeadings()[0]).toHaveText(chedRefusalDoc._id)
-    
-    expect(SearchResultsPage.getChedTableRowIndex(1)[0]).toHaveText(chedRefusalDoc.commodities[0].commodityId)
-    expect(SearchResultsPage.getChedTableRowIndex(1)[1]).toHaveText(chedRefusalDoc.commodities[0].commodityDescription)
-    expect(SearchResultsPage.getChedTableRowIndex(1)[2]).toHaveText(chedRefusalDoc.commodities[0].additionalData.netWeight)
+
+    await expect(SearchResultsPage.getChedTableHeadings()[0]).toHaveText(
+      chedRefusalDoc._id
+    )
+
+    await expect(SearchResultsPage.getChedTableRowIndex(1)[0]).toHaveText(
+      chedRefusalDoc.commodities[0].commodityId
+    )
+    await expect(SearchResultsPage.getChedTableRowIndex(1)[1]).toHaveText(
+      chedRefusalDoc.commodities[0].commodityDescription
+    )
+    await expect(SearchResultsPage.getChedTableRowIndex(1)[2]).toHaveText(
+      chedRefusalDoc.commodities[0].additionalData.netWeight
+    )
   })
 })
