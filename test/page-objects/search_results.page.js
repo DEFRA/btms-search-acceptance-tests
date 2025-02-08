@@ -1,4 +1,4 @@
-import { Page } from 'page-objects/page'
+import { Page } from "page-objects/page";
 
 class SearchResultsPage extends Page {
   // getters movements
@@ -14,7 +14,7 @@ class SearchResultsPage extends Page {
   }
 
   get status() {
-    return $('//*[@id="main-content"]/div/div/dl/div[2]/dd')
+    return $('#main-content > div > div > dl > div:nth-child(2) > dd')
   }
 
   get tableItemNumber() {
@@ -62,72 +62,48 @@ class SearchResultsPage extends Page {
   // ched actions
 
   async getChedTableHeadings() {
-    const headers = []
-    const headings = await $$(
-      '#main-content > div > div > dl:nth-child(7) div > dd'
-    )
-
-    await headings.forEach(async (element) => {
-      headers.push(await element.getText())
-    })
-
-    return headers
+    return this.commonItemCollector('#main-content > div > div > dl:nth-child(7) div > dd')
   }
 
   async getChedTableRowIndex(index) {
-    const cellItems = []
-    const tableRowCells = await $$(
-      '#main-content > div > div > table:nth-child(8) > tbody > tr:nth-child(' +
-        index +
-        ') td'
-    )
-
-    await tableRowCells.forEach(async (tableHeading) => {
-      cellItems.push(await tableHeading.getText())
-    })
-
-    return cellItems
+    return this.commonItemCollector('#main-content > div > div > table:nth-child(8) > tbody > tr:nth-child(' + index + ') td')
   }
 
   // movement actions
 
   async getTableHeadings() {
-    const headers = []
-    const headings = await $$('#main-content > div > div > table > thead tr th')
-
-    await headings.forEach(async (element) => {
-      headers.push(await element.getText())
-    })
-
-    return headers
+    return this.commonItemCollector('#main-content > div > div > table > thead tr th')
   }
 
   async getTableRowIndex(index) {
-    const cellItems = []
-    const tableRowCells = await $$(
-      '#main-content > div > div > table > tbody > tr:nth-child(' +
-        index +
-        ') td'
-    )
-
-    await tableRowCells.forEach(async (tableHeading) => {
-      cellItems.push(await tableHeading.getText())
-    })
-
-    return cellItems
+    return this.commonItemCollector('#main-content > div > div > table > tbody > tr:nth-child(' + index + ') td')
   }
 
-  async getHeadingRowMap(rowIndex) {
-    const headingRowMap = new Map()(await this.getTableHeadings()).forEach(
-      async (headerItem) => {
-        (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
-          headingRowMap.set(await headerItem, await rowItem)
-        })
-      }
+  async commonItemCollector(locator) {
+    const items = []
+    const locators = await $$(
+      locator
     )
 
-    return headingRowMap
+    for (let i = 0; i < locators.length; i++) {
+      items.push(await locators[i].getText())
+    }
+
+    return items
   }
+
+  // Possibly implement later as this aims to create a nice data structure to compare the data to.
+  // async getHeadingRowMap(rowIndex) {
+  //   const headingRowMap = new Map()(await this.getTableHeadings()).forEach(
+  //     async (headerItem) => {
+  //       (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
+  //         headingRowMap.set(await headerItem, await rowItem)
+  //       })
+  //     }
+  //   )
+  //
+  //   return headingRowMap
+  // }
 }
 
 export default new SearchResultsPage()

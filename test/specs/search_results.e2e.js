@@ -5,12 +5,14 @@ import { decisionToText } from '../../utils/data_mapper'
 import noMatch from '../../data/movement/nomatch.json'
 import refusalDoc from '../../data/movement/refusal.json'
 import chedRefusalDoc from '../../data/import_notifications/refusal.json'
+import matchedChedDoc from '../../data/import_notifications/matched_ched_ref.json'
 import holdDocument from '../../data/movement/hold.json'
+import matchDocument from '../../data/movement/match.json'
 import { expect } from '~/node_modules/@wdio/globals/build/index'
 
 describe('Search Results page', () => {
-  
-  it('Should display the correct search results details for a no match clearance request', async () => {
+
+  it('Should display the correct search results details for a "no match" clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(noMatch._id)
 
@@ -22,59 +24,60 @@ describe('Search Results page', () => {
       )
     )
 
-    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
-      noMatch.clearanceRequests[0].items[0].itemNumber
-    )
-    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
-      noMatch.clearanceRequests[0].items[0].taricCommodityCode
-    )
-    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+    const rowItems = await SearchResultsPage.getTableRowIndex(1)
+    const rowItemsTwo = await SearchResultsPage.getTableRowIndex(2)
+
+    await expect(rowItems[0]).toEqual(noMatch.clearanceRequests[0].items[0].itemNumber.toString())
+    await expect(rowItems[1]).toEqual(noMatch.clearanceRequests[0].items[0].taricCommodityCode.toString())
+    await expect(rowItems[2]).toEqual(
       noMatch.clearanceRequests[0].items[0].goodsDescription
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+    await expect(rowItems[3]).toEqual(
       noMatch.clearanceRequests[0].items[0].itemNetMass
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+    await expect(rowItems[4]).toEqual(
       noMatch.clearanceRequests[0].items[0].documents[0].documentReference
     )
 
-    await expect(SearchResultsPage.getTableRowIndex(2)[0]).toHaveText(
-      noMatch.clearanceRequests[0].items[1].itemNumber
+    await expect(rowItemsTwo[0]).toEqual(
+      noMatch.clearanceRequests[0].items[1].itemNumber.toString()
     )
-    await expect(SearchResultsPage.getTableRowIndex(2)[1]).toHaveText(
+    await expect(rowItemsTwo[1]).toEqual(
       noMatch.clearanceRequests[0].items[1].taricCommodityCode
     )
-    await expect(SearchResultsPage.getTableRowIndex(2)[2]).toHaveText(
+    await expect(rowItemsTwo[2]).toEqual(
       noMatch.clearanceRequests[0].items[1].goodsDescription
     )
-    await expect(SearchResultsPage.getTableRowIndex(2)[3]).toHaveText(
+    await expect(rowItemsTwo[3]).toEqual(
       noMatch.clearanceRequests[0].items[1].itemNetMass
     )
-    await expect(SearchResultsPage.getTableRowIndex(2)[4]).toHaveText(
+    await expect(rowItemsTwo[4]).toEqual(
       noMatch.clearanceRequests[0].items[1].documents[0].documentReference
     )
   })
-    
-  it('Should display the correct search results details for a held clearance request', async () => {
+
+  it('Should display the correct search results details for a "hold" clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(holdDocument._id)
 
     await expect(SearchResultsPage.heading).toBeDisplayed()
     await expect(SearchResultsPage.heading).toHaveText(holdDocument._id)
 
-    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
-      holdDocument.clearanceRequests[0].items[0].itemNumber
+    const rowItems = await SearchResultsPage.getTableRowIndex(1)
+
+    await expect(rowItems[0]).toEqual(
+      holdDocument.clearanceRequests[0].items[0].itemNumber.toString()
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
+    await expect(rowItems[1]).toEqual(
       holdDocument.clearanceRequests[0].items[0].taricCommodityCode
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+    await expect(rowItems[2]).toEqual(
       holdDocument.clearanceRequests[0].items[0].goodsDescription
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+    await expect(rowItems[3]).toEqual(
       holdDocument.clearanceRequests[0].items[0].itemNetMass
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+    await expect(rowItems[4]).toEqual(
       holdDocument.clearanceRequests[0].items[0].documents[0]
         .documentReference
     )
@@ -82,43 +85,108 @@ describe('Search Results page', () => {
     // no import notification to verify details
   })
 
-  it('Should display the correct search results details for a refusal clearance request', async () => {
+  it('Should display the correct search results details for a "refusal" clearance request', async () => {
     await SearchPage.open()
     await SearchPage.searchFor(refusalDoc._id)
 
     await expect(SearchResultsPage.heading).toBeDisplayed()
     await expect(SearchResultsPage.heading).toHaveText(refusalDoc._id)
 
-    await expect(SearchResultsPage.getTableRowIndex(1)[0]).toHaveText(
-      refusalDoc.clearanceRequests[0].items[0].itemNumber
+    const mrnRowItems = await SearchResultsPage.getTableRowIndex(1)
+
+    await expect(mrnRowItems[0]).toEqual(
+      refusalDoc.clearanceRequests[0].items[0].itemNumber.toString()
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[1]).toHaveText(
+    await expect(mrnRowItems[1]).toEqual(
       refusalDoc.clearanceRequests[0].items[0].taricCommodityCode
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[2]).toHaveText(
+    await expect(mrnRowItems[2]).toEqual(
       refusalDoc.clearanceRequests[0].items[0].goodsDescription
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[3]).toHaveText(
+    await expect(mrnRowItems[3]).toEqual(
       refusalDoc.clearanceRequests[0].items[0].itemNetMass
     )
-    await expect(SearchResultsPage.getTableRowIndex(1)[4]).toHaveText(
+    await expect(mrnRowItems[4]).toEqual(
       refusalDoc.clearanceRequests[0].items[0].documents[0].documentReference
     )
 
     // ched details
+    const chedHeadingRowItems = await SearchResultsPage.getChedTableHeadings()
+    const chedRowItems = await SearchResultsPage.getChedTableRowIndex(1)
 
-    await expect(SearchResultsPage.getChedTableHeadings()[0]).toHaveText(
+    await expect(chedHeadingRowItems[0]).toEqual(
       chedRefusalDoc._id
     )
 
-    await expect(SearchResultsPage.getChedTableRowIndex(1)[0]).toHaveText(
+    await expect(chedRowItems[1]).toEqual(
       chedRefusalDoc.commodities[0].commodityId
     )
-    await expect(SearchResultsPage.getChedTableRowIndex(1)[1]).toHaveText(
+
+    await expect(chedRowItems[2]).toEqual(
       chedRefusalDoc.commodities[0].commodityDescription
     )
-    await expect(SearchResultsPage.getChedTableRowIndex(1)[2]).toHaveText(
-      chedRefusalDoc.commodities[0].additionalData.netWeight
+
+    await expect(chedRowItems[3]).toEqual(
+      chedRefusalDoc.commodities[0].additionalData.netWeight.toString()
     )
   })
+
+  it('Should verify the correct details for a "match" movement document', async () => {
+    await SearchPage.open()
+    await SearchPage.searchFor(matchDocument._id)
+
+    await expect(SearchResultsPage.heading).toBeDisplayed()
+    await expect(SearchResultsPage.heading).toHaveText(matchDocument._id)
+
+    const mrnMatchRowItems = await SearchResultsPage.getTableRowIndex(1)
+
+    await expect(mrnMatchRowItems[0]).toEqual(
+      matchDocument.clearanceRequests[0].items[0].itemNumber.toString()
+    )
+    await expect(mrnMatchRowItems[1]).toEqual(
+      matchDocument.clearanceRequests[0].items[0].taricCommodityCode
+    )
+    await expect(mrnMatchRowItems[2]).toEqual(
+      matchDocument.clearanceRequests[0].items[0].goodsDescription
+    )
+    await expect(mrnMatchRowItems[3]).toEqual(
+      matchDocument.clearanceRequests[0].items[0].itemNetMass
+    )
+    await expect(mrnMatchRowItems[4]).toEqual(
+      matchDocument.clearanceRequests[0].items[0].documents[0].documentReference
+    )
+  })
+
+  it('Should allow the user to perform a search based on a CHED reference', async () => {
+
+    await SearchPage.open()
+    await SearchPage.searchFor(matchedChedDoc._id)
+
+    await expect(SearchResultsPage.heading).toBeDisplayed()
+    await expect(SearchResultsPage.heading).toHaveText(matchedChedDoc._id)
+
+    const chedHeadingRowItems = await SearchResultsPage.getChedTableHeadings()
+    const chedRowItems = await SearchResultsPage.getChedTableRowIndex(1)
+
+    await expect(chedHeadingRowItems[0]).toEqual(
+      matchedChedDoc._id
+    )
+
+    await expect(chedRowItems[1]).toEqual(
+      matchedChedDoc.commodities[0].commodityId
+    )
+
+    await expect(chedRowItems[2]).toEqual(
+      matchedChedDoc.commodities[0].commodityDescription
+    )
+
+    await expect(chedRowItems[3]).toEqual(
+      matchedChedDoc.commodities[0].additionalData.netWeight.toString()
+    )
+  })
+
+  // // TODO: functionality is not complete yet.
+  // it('Should enable a partial CHED reference search', async () => {
+  //
+  // })
 })
