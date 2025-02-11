@@ -6,8 +6,24 @@ const oneHour = 60 * 60 * 1000
 
 const execArgv = ['--loader', 'esm-module-alias/loader']
 
+let baseUrl
+
 if (debug) {
   execArgv.push('--inspect')
+}
+
+if (process.env.ENVIRONMENT === 'local'){
+  baseUrl = 'http://localhost:8080'
+} else if (process.env.ENVIRONMENT === 'dev'){
+  baseUrl = 'https://btms-portal-frontend.dev.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'test'){
+  baseUrl = 'https://btms-portal-frontend.test.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'exttest'){
+  baseUrl = 'https://btms-portal-frontend.ext-test.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'perf'){
+  baseUrl = 'https://btms-portal-frontend.perf-test.cdp-int.defra.cloud'
+} else {
+  throw new Error('Invalid environment. Please provide en environment for the tests, e.g., "local|test|exttest|perf"');
 }
 
 export const config = {
@@ -112,7 +128,8 @@ export const config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:3000',
+  // baseUrl: 'http://localhost:3000',
+  baseUrl: baseUrl,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
