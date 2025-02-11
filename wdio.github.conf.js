@@ -2,6 +2,22 @@ import allure from 'allure-commandline'
 
 const oneMinute = 60 * 1000
 
+let baseUrl
+
+if (process.env.ENVIRONMENT === 'local'){
+  baseUrl = 'http://localhost:8080'
+} else if (process.env.ENVIRONMENT === 'dev'){
+  baseUrl = 'https://btms-portal-frontend.dev.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'test'){
+  baseUrl = 'https://btms-portal-frontend.test.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'exttest'){
+  baseUrl = 'https://btms-portal-frontend.ext-test.cdp-int.defra.cloud'
+} else if (process.env.ENVIRONMENT === 'perf'){
+  baseUrl = 'https://btms-portal-frontend.perf-test.cdp-int.defra.cloud'
+} else {
+  throw new Error('Invalid environment. Please provide en environment for the tests, e.g., "local|test|exttest|perf"');
+}
+
 export const config = {
   //
   // ====================
@@ -14,7 +30,8 @@ export const config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: `http://localhost:3000`,
+  // baseUrl: `http://localhost:3000`,
+  baseUrl,
 
   // Connection to remote chromedriver
   hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
