@@ -30,6 +30,11 @@ jobs:
 #          npm run test:github
 #          npm run report
 
+      - name: Check the directory
+        run: |
+          pwd
+          ls -al
+
       - name: Run the tests
         env:
           DEFRA_ID_CLIENT_SECRET: test_value
