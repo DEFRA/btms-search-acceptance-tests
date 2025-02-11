@@ -34,12 +34,12 @@ export const config = {
     [
       'browserstack',
       {
-        testObservability: false, // Disable if you do not want to use the browserstack test observer functionality
+        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
         testObservabilityOptions: {
           user: process.env.BROWSERSTACK_USER,
           key: process.env.BROWSERSTACK_KEY,
-          projectName: "set this to match the test suite name",
-          buildName: "set as required"
+          projectName: "BTMS Search UI Tests",
+          buildName: "daily run"
         },
         acceptInsecureCerts: true,
         forceLocal: true,
