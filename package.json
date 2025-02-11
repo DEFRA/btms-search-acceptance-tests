@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@wdio/allure-reporter": "9.4.3",
+    "@wdio/browserstack-service": "9.8.0",
     "@wdio/cli": "9.4.3",
     "@wdio/globals": "9.4.3",
     "@wdio/junit-reporter": "9.4.3",
