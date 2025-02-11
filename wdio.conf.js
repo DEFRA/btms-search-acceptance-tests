@@ -27,8 +27,8 @@ export const config = {
   runner: 'local',
 
   // Browserstack properties
-  user: process.env.BROWSERSTACK_USER,
-  key:  process.env.BROWSERSTACK_KEY,
+  // user: process.env.BROWSERSTACK_USER,
+  // key:  process.env.BROWSERSTACK_KEY,
 
   services: [
     [
@@ -78,7 +78,7 @@ export const config = {
       'bstack:options': {
         browserVersion: 'latest',
         os: 'Windows',
-        osVersion: '10'
+        osVersion: '11'
       }
     }
   ],

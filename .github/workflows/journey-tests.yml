@@ -33,7 +33,9 @@ jobs:
       - name: Check the directory
         run: |
           pwd
-          ls -al
+          npm update @wdio/browserstack-service
+          npm list @wdio/browserstack-service
+          npm run
 
       - name: Run the tests
         env:
