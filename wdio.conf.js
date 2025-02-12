@@ -27,26 +27,8 @@ export const config = {
   runner: 'local',
 
   // Browserstack properties
-  // user: process.env.BROWSERSTACK_USER,
-  // key:  process.env.BROWSERSTACK_KEY,
-
-  services: [
-    [
-      'browserstack',
-      {
-        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
-        testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USER,
-          key: process.env.BROWSERSTACK_KEY,
-          projectName: "BTMS Search UI Tests",
-          buildName: "daily run"
-        },
-        acceptInsecureCerts: true,
-        forceLocal: true,
-        browserstackLocal: true
-      }
-    ]
-  ],
+  user: process.env.BROWSERSTACK_USER,
+  key:  process.env.BROWSERSTACK_KEY,
 
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
@@ -58,7 +40,7 @@ export const config = {
   baseUrl,
   // Connection to remote chromedriver
   hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
-  port: process.env.CHROMEDRIVER_PORT || 4444,
+  port: process.env.CHROMEDRIVER_PORT || 4445,
 
   // Tests to run
   specs: ['./test/specs/**/*.js'],
@@ -80,7 +62,35 @@ export const config = {
         os: 'Windows',
         osVersion: '11'
       }
-    }
+    },
+    // {
+    //   browserName: 'Safari',
+    //   'bstack:options': {
+    //     os: 'OS X',
+    //     osVersion: 'Sonoma',
+    //     browserVersion: '17.3',
+    //     projectName: "BTMS Search UI Tests",
+    //     buildName: "daily run"
+    //   }
+    // }
+  ],
+
+  services: [
+    [
+      'browserstack',
+      {
+        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
+        testObservabilityOptions: {
+          user: process.env.BROWSERSTACK_USER,
+          key: process.env.BROWSERSTACK_KEY,
+          projectName: "BTMS Search UI Tests",
+          buildName: "daily run"
+        },
+        acceptInsecureCerts: true,
+        forceLocal: true,
+        browserstackLocal: true
+      }
+    ]
   ],
 
   // capabilities: [
