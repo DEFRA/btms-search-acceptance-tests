@@ -43,6 +43,9 @@ export const config = {
   exclude: [],
   maxInstances: 1,
 
+  user: process.env.BROWSERSTACK_USER,
+  key: process.env.BROWSERSTACK_KEY,
+
   commonCapabilities: {
     'bstack:options': {
       buildName: 'browserstack-build-1' // configure as required
@@ -73,7 +76,9 @@ export const config = {
         },
         acceptInsecureCerts: true,
         forceLocal: true,
-        browserstackLocal: true
+        browserstackLocal: true,
+        proxyHost: '127.0.0.1',
+        proxyPort: 3128
       }
     ]
   ],

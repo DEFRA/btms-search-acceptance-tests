@@ -39,8 +39,8 @@ export const config = {
   // baseUrl: `https://btms-search-acceptance-tests.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
   baseUrl,
   // Connection to remote chromedriver
-  hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
-  port: process.env.CHROMEDRIVER_PORT || 4444,
+  // hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
+  // port: process.env.CHROMEDRIVER_PORT || 4444,
 
   // Tests to run
   specs: ['./test/specs/**/*.js'],
@@ -62,17 +62,7 @@ export const config = {
         os: 'Windows',
         osVersion: '10'
       }
-    },
-    // {
-    //   browserName: 'Safari',
-    //   'bstack:options': {
-    //     os: 'OS X',
-    //     osVersion: 'Sonoma',
-    //     browserVersion: '17.3',
-    //     projectName: "BTMS Search UI Tests",
-    //     buildName: "daily run"
-    //   }
-    // }
+    }
   ],
 
   services: [
@@ -88,39 +78,12 @@ export const config = {
         },
         acceptInsecureCerts: true,
         forceLocal: true,
-        browserstackLocal: true
+        browserstackLocal: true,
+        proxyHost: '127.0.0.1',
+        proxyPort: 3128
       }
     ]
   ],
-
-  // capabilities: [
-  //   {
-  //     browserName: 'chrome',
-  //     // Outbound calls must go via the proxy
-  //     proxy: {
-  //       proxyType: 'manual',
-  //       httpProxy: 'localhost:3128',
-  //       sslProxy: 'localhost:3128'
-  //     },
-  //     'goog:chromeOptions': {
-  //       args: [
-  //         '--no-sandbox',
-  //         '--disable-infobars',
-  //         '--headless',
-  //         '--disable-gpu',
-  //         '--window-size=1920,1080',
-  //         '--enable-features=NetworkService,NetworkServiceInProcess',
-  //         '--password-store=basic',
-  //         '--use-mock-keychain',
-  //         '--dns-prefetch-disable',
-  //         '--disable-background-networking',
-  //         '--disable-remote-fonts',
-  //         '--ignore-certificate-errors',
-  //         '--disable-dev-shm-usage'
-  //       ]
-  //     }
-  //   }
-  // ],
 
   execArgv: ['--loader', 'esm-module-alias/loader'],
 
