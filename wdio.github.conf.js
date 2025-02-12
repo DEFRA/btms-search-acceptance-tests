@@ -43,27 +43,39 @@ export const config = {
   exclude: [],
   maxInstances: 1,
 
+  commonCapabilities: {
+    'bstack:options': {
+      buildName: 'browserstack-build-1' // configure as required
+    }
+  },
+
   capabilities: [
     {
-      browserName: 'chrome',
-      'goog:chromeOptions': {
-        args: [
-          '--no-sandbox',
-          '--disable-infobars',
-          '--headless',
-          '--disable-gpu',
-          '--window-size=1920,1080',
-          '--enable-features=NetworkService,NetworkServiceInProcess',
-          '--password-store=basic',
-          '--use-mock-keychain',
-          '--dns-prefetch-disable',
-          '--disable-background-networking',
-          '--disable-remote-fonts',
-          '--ignore-certificate-errors',
-          '--disable-dev-shm-usage'
-        ]
+      browserName: 'Chrome', // Set these to whatever combination of browsers you require
+      'bstack:options': {
+        browserVersion: 'latest',
+        os: 'Windows',
+        osVersion: '10'
       }
     }
+  ],
+
+  services: [
+    [
+      'browserstack',
+      {
+        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
+        testObservabilityOptions: {
+          user: process.env.BROWSERSTACK_USER,
+          key: process.env.BROWSERSTACK_KEY,
+          projectName: "BTMS Search UI Tests",
+          buildName: "daily run"
+        },
+        acceptInsecureCerts: true,
+        forceLocal: true,
+        browserstackLocal: true
+      }
+    ]
   ],
 
   execArgv: ['--loader', 'esm-module-alias/loader'],
