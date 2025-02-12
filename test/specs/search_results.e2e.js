@@ -1,6 +1,6 @@
-import SearchPage from 'page-objects/search.page'
-import SearchResultsPage from 'page-objects/search_results.page'
-import { decisionToText } from '../../utils/data_mapper'
+import SearchPage from '../page-objects/search.page'
+import SearchResultsPage from '../page-objects/search_results.page'
+import { decisionToText } from "~/utils/data_mapper.js"
 
 import noMatch from '../../data/movement/nomatch.json'
 import refusalDoc from '../../data/movement/refusal.json'
@@ -8,7 +8,7 @@ import chedRefusalDoc from '../../data/import_notifications/refusal.json'
 import matchedChedDoc from '../../data/import_notifications/matched_ched_ref.json'
 import holdDocument from '../../data/movement/hold.json'
 import matchDocument from '../../data/movement/match.json'
-import { expect } from '~/node_modules/@wdio/globals/build/index'
+import { expect } from "@wdio/globals"
 
 describe('Search Results page', () => {
 

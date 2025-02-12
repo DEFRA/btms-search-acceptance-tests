@@ -1,7 +1,7 @@
 import { browser, expect } from '@wdio/globals'
-import SearchPage from 'page-objects/search.page'
-import SearchResultsPage from 'page-objects/search_results.page'
-import noMatch from '../../data/movement/noMatch.json'
+import SearchPage from '../page-objects/search.page'
+import SearchResultsPage from '../page-objects/search_results.page'
+import noMatch from '../../data/movement/nomatch.json'
 
 describe('Search page', () => {
   it('Should be on the search page', async () => {
