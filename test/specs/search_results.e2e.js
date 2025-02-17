@@ -185,8 +185,25 @@ describe('Search Results page', () => {
     )
   })
 
-  // // TODO: functionality is not complete yet.
-  // it('Should enable a partial CHED reference search', async () => {
-  //
-  // })
+  const fullChed = matchedChedDoc._id
+  const chedComponents = fullChed.split(".")
+  const lastPartialChed = chedComponents.at(-1)
+
+  chedComponents.shift()
+  const partialChedOne = chedComponents.join(".")
+
+  chedComponents.shift()
+  const partialChedTwo = chedComponents.join(".")
+
+  const cheds = [partialChedOne, partialChedTwo, lastPartialChed]
+
+  cheds.forEach(function (partialChed) {
+    it('Should enable a partial CHED reference search', async () => {
+      await SearchPage.open()
+        await SearchPage.searchFor(partialChed)
+
+        await expect(SearchResultsPage.heading).toBeDisplayed()
+        await expect(SearchResultsPage.heading).toHaveText(partialChed)
+    })
+  })
 })
