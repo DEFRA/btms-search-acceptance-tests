@@ -29,36 +29,36 @@ jobs:
           docker image pull mongo:6.0.13
           docker compose up -d
           echo "***DONE***"
-#          curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3000/search
-#          npm i
-#          docker compose up
 
-#      - uses: actions/checkout@v4
-#      - uses: actions/setup-node@v4
-#        with:
-#          node-version: 20
-#          cache: npm
-#      - name: Setup the tests
-#        run: npm i
-#
-#      - name: Start docker compose
-#        run: docker compose up --wait-timeout 300 -d --quiet-pull
-#
-#      - name: Run the tests
-#        env:
-#          BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
-#          BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-#        run: |
-#          ENVIRONMENT=local npm run test:github
-#
-#      - name: upload artifact
-#        if: failure()
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: allure-report
-#          path: ./allure-report
-#      - name: debug
-#        if: failure()
-#        run: |
-#          docker compose logs > logs.txt
-#          docker ps
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup the tests
+        run: npm i
+
+      - name: Start docker compose
+        run:
+          pwd
+          docker compose up --wait-timeout 300 -d --quiet-pull
+
+      - name: Run the tests
+        env:
+          BROWSERSTACK_USER: ${{ secrets.BROWSERSTACK_USER }}
+          BROWSERSTACK_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+        run: |
+          ENVIRONMENT=local npm run test:local
+
+      - name: upload artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: ./allure-report
+      - name: debug
+        if: failure()
+        run: |
+          docker compose logs > logs.txt
+          docker ps
