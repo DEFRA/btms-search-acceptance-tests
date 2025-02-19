@@ -28,6 +28,7 @@ jobs:
           pwd
           cd btms-portal-frontend
           ls -al
+          cat compose.yml
 #          npm i
 #          docker compose up
 
