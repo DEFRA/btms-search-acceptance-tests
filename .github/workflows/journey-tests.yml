@@ -23,11 +23,12 @@ jobs:
 
       - name: Build and run frontend in docker
         run: |
-          ls -al
-          pwd
           cd btms-portal-frontend
-          ls -al
-          cat compose.yml
+          docker image pull localstack/localstack:3.0.2
+          docker image pull redis:7.2.3-alpine3.18
+          docker image pull
+          docker compose up -d
+          curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3000/search
 #          npm i
 #          docker compose up
 
