@@ -26,6 +26,8 @@ jobs:
         run: |
           ls -al
           pwd
+          cd btms-portal-frontend
+          ls -al
 #          npm i
 #          docker compose up
 
