@@ -1,21 +1,22 @@
-import fs from 'node:fs'
+import fs from "node:fs";
+import { init, getHtmlReportByCategory } from "./dist/wcagchecker.cjs";
 
-const oneMinute = 60 * 1000
+const oneMinute = 60 * 1000;
 
-let baseUrl
+let baseUrl;
 
-if (process.env.ENVIRONMENT === 'local'){
-  baseUrl = 'http://localhost:8080'
-} else if (process.env.ENVIRONMENT === 'dev'){
-  baseUrl = 'https://btms-portal-frontend.dev.cdp-int.defra.cloud'
-} else if (process.env.ENVIRONMENT === 'test'){
-  baseUrl = 'https://btms-portal-frontend.test.cdp-int.defra.cloud'
-} else if (process.env.ENVIRONMENT === 'exttest'){
-  baseUrl = 'https://btms-portal-frontend.ext-test.cdp-int.defra.cloud'
-} else if (process.env.ENVIRONMENT === 'perf'){
-  baseUrl = 'https://btms-portal-frontend.perf-test.cdp-int.defra.cloud'
+if (process.env.ENVIRONMENT === "local") {
+  baseUrl = "http://localhost:8080";
+} else if (process.env.ENVIRONMENT === "dev") {
+  baseUrl = "https://btms-portal-frontend.dev.cdp-int.defra.cloud";
+} else if (process.env.ENVIRONMENT === "test") {
+  baseUrl = "https://btms-portal-frontend.test.cdp-int.defra.cloud";
+} else if (process.env.ENVIRONMENT === "exttest") {
+  baseUrl = "https://btms-portal-frontend.ext-test.cdp-int.defra.cloud";
+} else if (process.env.ENVIRONMENT === "perf") {
+  baseUrl = "https://btms-portal-frontend.perf-test.cdp-int.defra.cloud";
 } else {
-  throw new Error('Invalid environment. Please provide en environment for the tests, e.g., "local|test|exttest|perf"');
+  throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"local|test|exttest|perf\"");
 }
 
 export const config = {
@@ -24,11 +25,11 @@ export const config = {
   // Runner Configuration
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
-  runner: 'local',
+  runner: "local",
 
   // Browserstack properties
   user: process.env.BROWSERSTACK_USER,
-  key:  process.env.BROWSERSTACK_KEY,
+  key: process.env.BROWSERSTACK_KEY,
 
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
@@ -43,31 +44,31 @@ export const config = {
   // port: process.env.CHROMEDRIVER_PORT || 4444,
 
   // Tests to run
-  specs: ['./test/specs/**/*.js'],
+  specs: ["./test/specs/**/*.js"],
   // Tests to exclude
   exclude: [],
   maxInstances: 1,
 
   commonCapabilities: {
-    'bstack:options': {
-      buildName: 'browserstack-build-1' // configure as required
+    "bstack:options": {
+      buildName: "browserstack-build-1" // configure as required
     }
   },
 
   capabilities: [
     {
-      browserName: 'Chrome', // Set these to whatever combination of browsers you require
-      'bstack:options': {
-        browserVersion: 'latest',
-        os: 'Windows',
-        osVersion: '10'
+      browserName: "Chrome", // Set these to whatever combination of browsers you require
+      "bstack:options": {
+        browserVersion: "latest",
+        os: "Windows",
+        osVersion: "10"
       }
     }
   ],
 
   services: [
     [
-      'browserstack',
+      "browserstack",
       {
         testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
         testObservabilityOptions: {
@@ -79,15 +80,15 @@ export const config = {
         acceptInsecureCerts: true,
         forceLocal: true,
         browserstackLocal: true,
-        proxyHost: '127.0.0.1',
+        proxyHost: "127.0.0.1",
         proxyPort: 3128
       }
     ]
   ],
 
-  execArgv: ['--loader', 'esm-module-alias/loader'],
+  execArgv: ["--loader", "esm-module-alias/loader"],
 
-  logLevel: 'info',
+  logLevel: "info",
 
   // Number of failures before the test suite bails.
   bail: 0,
@@ -96,12 +97,12 @@ export const config = {
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
 
-  framework: 'mocha',
+  framework: "mocha",
 
   reporters: [
     [
       // Spec reporter provides rolling output to the logger so you can see it in-progress
-      'spec',
+      "spec",
       {
         addConsoleLogs: true,
         realtimeReporting: true,
@@ -110,9 +111,9 @@ export const config = {
     ],
     [
       // Allure is used to generate the final HTML report
-      'allure',
+      "allure",
       {
-        outputDir: 'allure-results'
+        outputDir: "allure-results"
       }
     ]
   ],
@@ -120,7 +121,7 @@ export const config = {
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
-    ui: 'bdd',
+    ui: "bdd",
     timeout: oneMinute
   },
   //
@@ -211,21 +212,26 @@ export const config = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  afterTest: async function (
+
+  beforeSuite: async function() {
+    await init();
+  },
+
+  afterTest: async function(
     test,
     context,
     { error, result, duration, passed, retries }
   ) {
     if (error) {
-      await browser.takeScreenshot()
+      await browser.takeScreenshot();
     }
   },
 
   async after() {
-    fs.writeFileSync( '/Users/adebolaoke/defra/btms-search-acceptance-tests/accessibility-reports/res.html', '', (err) => {
+    fs.writeFileSync("/Users/adebolaoke/defra/btms-search-acceptance-tests/accessibility-reports/res.html", getHtmlReportByCategory(), (err) => {
       // In case of a error throw err.
       if (err) throw err;
-    })
+    });
   },
 
   /**
@@ -264,10 +270,10 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function (exitCode, config, capabilities, results) {
+  onComplete: function(exitCode, config, capabilities, results) {
     // !Do Not Remove! Required for test status to show correctly in portal.
     if (results?.failed && results.failed > 0) {
-      fs.writeFileSync('FAILED', JSON.stringify(results))
+      fs.writeFileSync("FAILED", JSON.stringify(results));
     }
   }
   /**
@@ -276,4 +282,4 @@ export const config = {
    * @param {string} newSessionId session ID of the new session
    */
   // onReload: function (oldSessionId, newSessionId) {}
-}
+};

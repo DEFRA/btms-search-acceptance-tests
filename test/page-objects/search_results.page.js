@@ -1,6 +1,9 @@
 import { Page } from "./page.js";
+import { analyse } from "../../dist/wcagchecker.cjs";
+import { browser } from "@wdio/globals";
 
 class SearchResultsPage extends Page {
+
   // getters movements
 
   get heading() {
@@ -80,6 +83,7 @@ class SearchResultsPage extends Page {
   }
 
   async commonItemCollector(locator) {
+    await analyse(browser, "");
     const items = []
     const locators = await $$(
       locator
@@ -91,19 +95,6 @@ class SearchResultsPage extends Page {
 
     return items
   }
-
-  // Possibly implement later as this aims to create a nice data structure to compare the data to.
-  // async getHeadingRowMap(rowIndex) {
-  //   const headingRowMap = new Map()(await this.getTableHeadings()).forEach(
-  //     async (headerItem) => {
-  //       (await this.getTableRowIndex(rowIndex)).forEach(async (rowItem) => {
-  //         headingRowMap.set(await headerItem, await rowItem)
-  //       })
-  //     }
-  //   )
-  //
-  //   return headingRowMap
-  // }
 }
 
 export default new SearchResultsPage()
