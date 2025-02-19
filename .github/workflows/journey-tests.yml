@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: DEFRA/btms-portal-frontend
-          token: ${{ secrets.GITHUB_TOKEN }}
           path: btms-portal-frontend
 
       - name: Build and run frontend in docker
