@@ -221,6 +221,13 @@ export const config = {
     }
   },
 
+  async after() {
+    fs.writeFileSync( '/Users/adebolaoke/defra/btms-search-acceptance-tests/accessibility-reports/res.html', getHtmlReportByCategory(), (err) => {
+      // In case of a error throw err.
+      if (err) throw err;
+    })
+  },
+
   /**
    * Hook that gets executed after the suite has ended
    * @param {object} suite suite details

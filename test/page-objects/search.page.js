@@ -12,6 +12,7 @@ class SearchPage extends Page {
 
   // page object methods
   async searchFor(input) {
+    super.analyse(browser, "");
     await this.searchTextBox.waitForDisplayed({ timeout: 3000 })
     await this.searchTextBox.setValue(input)
     await this.searchButton.click()
