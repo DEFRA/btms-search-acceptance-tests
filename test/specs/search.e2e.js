@@ -1,7 +1,7 @@
 import { browser, expect } from '@wdio/globals'
 import SearchPage from '../page-objects/search.page'
 import SearchResultsPage from '../page-objects/search_results.page'
-import noMatch from '../../data/movement/nomatch.json'
+// import noMatch from '../../data/movement/nomatch.json'
 
 describe('Search page', () => {
   it('Should be on the search page', async () => {
@@ -15,7 +15,7 @@ describe('Search page', () => {
 
   it('Should navigate to the search results page for a valid MRN search', async () => {
     await SearchPage.open()
-    await SearchPage.searchFor(noMatch._id)
+    await SearchPage.searchFor('24GBDE696CEFN40AR3')
 
     await expect(browser).toHaveTitle(
       'Search result - Border Trade Matching Service'
