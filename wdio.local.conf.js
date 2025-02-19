@@ -295,7 +295,7 @@ export const config = {
   },
 
   async after() {
-    fs.writeFileSync( './accessibility-reports/report.html', getHtmlReportByCategory(), (err) => {
+    fs.writeFileSync( './accessibility-reports/local_report.html', getHtmlReportByCategory(), (err) => {
       // In case of a error throw err.
       if (err) throw err;
     })
