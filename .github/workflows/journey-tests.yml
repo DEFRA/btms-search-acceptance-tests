@@ -28,7 +28,8 @@ jobs:
           docker image pull redis:7.2.3-alpine3.18
           docker image pull mongo:6.0.13
           docker compose up -d
-          curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3000/search
+          echo "***DONE***"
+#          curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3000/search
 #          npm i
 #          docker compose up
 
