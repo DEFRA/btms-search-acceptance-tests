@@ -17,7 +17,7 @@ if (process.env.ENVIRONMENT === "local") {
 } else if (process.env.ENVIRONMENT === "perf") {
   baseUrl = "https://btms-portal-frontend.perf-test.cdp-int.defra.cloud";
 } else {
-  throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"local|test|exttest|perf\"");
+  throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"dev|local|test|exttest|perf\"");
 }
 
 export const config = {
