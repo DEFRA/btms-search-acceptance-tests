@@ -1,4 +1,5 @@
 import { Page } from './page.js'
+import { analyse } from "../../dist/wcagchecker.cjs";
 
 class SearchPage extends Page {
   // getters
@@ -12,7 +13,9 @@ class SearchPage extends Page {
 
   // page object methods
   async searchFor(input) {
+    await analyse(browser, "");
     await this.searchTextBox.waitForDisplayed({ timeout: 3000 })
+    await this.searchButton.waitForDisplayed({ timeout: 3000 })
     await this.searchTextBox.setValue(input)
     await this.searchButton.click()
   }
