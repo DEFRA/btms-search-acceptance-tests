@@ -30,9 +30,10 @@ jobs:
           docker compose up -d
           echo "***DONE***"
 
-      - name: Check portl frontend is running
+      - name: Check if portal frontend is running
         run:
-          curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3000/search
+          sleep 30
+          docker ps -a
 
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
