@@ -21,7 +21,7 @@ jobs:
           repository: DEFRA/btms-portal-frontend
           path: btms-portal-frontend
 
-      - name: Build and run frontend in docker
+      - name: Start portal frontend in docker
         run: |
           cd btms-portal-frontend
           docker image pull localstack/localstack:3.0.2
@@ -29,10 +29,7 @@ jobs:
           docker image pull mongo:6.0.13
           docker compose up -d
           echo "***DONE***"
-
-      - name: Check if portal frontend is running
-        run:
-          sleep 30
+          sleep 60
           docker ps
 
       - uses: actions/checkout@v4
