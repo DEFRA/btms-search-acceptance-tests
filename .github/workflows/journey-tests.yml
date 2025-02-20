@@ -33,7 +33,7 @@ jobs:
       - name: Check if portal frontend is running
         run:
           sleep 30
-          docker ps -a
+          docker ps
 
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
