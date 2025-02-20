@@ -2,6 +2,7 @@ import allure from "allure-commandline";
 import fs from "node:fs";
 import { init, getHtmlReportByCategory } from "./dist/wcagchecker.cjs";
 
+const debug = process.env.DEBUG
 const oneMinute = 60 * 1000;
 
 let baseUrl;
@@ -45,45 +46,62 @@ export const config = {
   exclude: [],
   maxInstances: 1,
 
-  user: process.env.BROWSERSTACK_USER,
-  key: process.env.BROWSERSTACK_KEY,
-
-  commonCapabilities: {
-    "bstack:options": {
-      buildName: "browserstack-build-1" // configure as required
-    }
-  },
-
-  capabilities: [
-    {
-      browserName: "Chrome", // Set these to whatever combination of browsers you require
-      "bstack:options": {
-        browserVersion: "latest",
-        os: "Windows",
-        osVersion: "10"
-      }
-    }
-  ],
-
-  services: [
-    [
-      "browserstack",
+  capabilities: debug
+    ? [{ browserName: 'chrome' }]
+    : [
       {
-        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
-        testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USER,
-          key: process.env.BROWSERSTACK_KEY,
-          projectName: "BTMS Search UI Tests",
-          buildName: "daily run"
-        },
-        acceptInsecureCerts: true,
-        forceLocal: true,
-        browserstackLocal: true,
-        proxyHost: "127.0.0.1",
-        proxyPort: 3128
+        maxInstances: 1,
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          args: [
+            '--no-sandbox',
+            '--disable-infobars',
+            '--disable-gpu',
+            '--window-size=1920,1080'
+          ]
+        }
       }
-    ]
-  ],
+    ],
+
+  // user: process.env.BROWSERSTACK_USER,
+  // key: process.env.BROWSERSTACK_KEY,
+
+  // commonCapabilities: {
+  //   "bstack:options": {
+  //     buildName: "browserstack-build-1" // configure as required
+  //   }
+  // },
+  //
+  // capabilities: [
+  //   {
+  //     browserName: "Chrome", // Set these to whatever combination of browsers you require
+  //     "bstack:options": {
+  //       browserVersion: "latest",
+  //       os: "Windows",
+  //       osVersion: "10"
+  //     }
+  //   }
+  // ],
+  //
+  // services: [
+  //   [
+  //     "browserstack",
+  //     {
+  //       testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
+  //       testObservabilityOptions: {
+  //         user: process.env.BROWSERSTACK_USER,
+  //         key: process.env.BROWSERSTACK_KEY,
+  //         projectName: "BTMS Search UI Tests",
+  //         buildName: "daily run"
+  //       },
+  //       acceptInsecureCerts: true,
+  //       forceLocal: true,
+  //       browserstackLocal: true,
+  //       proxyHost: "127.0.0.1",
+  //       proxyPort: 3128
+  //     }
+  //   ]
+  // ],
 
   execArgv: ["--loader", "esm-module-alias/loader"],
 
