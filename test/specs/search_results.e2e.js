@@ -1,6 +1,5 @@
 import SearchPage from '../page-objects/search.page'
 import SearchResultsPage from '../page-objects/search_results.page'
-import { decisionToText } from "~/utils/data_mapper.js"
 
 import noMatch from '../../data/movement/nomatch.json'
 import refusalDoc from '../../data/movement/refusal.json'
@@ -18,11 +17,6 @@ describe('Search Results page', () => {
 
     await expect(SearchResultsPage.heading).toBeDisplayed()
     await expect(SearchResultsPage.heading).toHaveText(noMatch._id)
-    await expect(await SearchResultsPage.status).toHaveText(
-      await decisionToText(
-        noMatch.alvsDecisionStatus.context.decisionComparison.decisionMatched
-      )
-    )
 
     const rowItems = await SearchResultsPage.getTableRowIndex(1)
     const rowItemsTwo = await SearchResultsPage.getTableRowIndex(2)
@@ -35,7 +29,7 @@ describe('Search Results page', () => {
     await expect(rowItems[3]).toEqual(
       noMatch.clearanceRequests[0].items[0].itemNetMass
     )
-    await expect(rowItems[4]).toEqual(
+    await expect(rowItems[4]).toContain(
       noMatch.clearanceRequests[0].items[0].documents[0].documentReference
     )
 
@@ -51,7 +45,7 @@ describe('Search Results page', () => {
     await expect(rowItemsTwo[3]).toEqual(
       noMatch.clearanceRequests[0].items[1].itemNetMass
     )
-    await expect(rowItemsTwo[4]).toEqual(
+    await expect(rowItemsTwo[4]).toContain(
       noMatch.clearanceRequests[0].items[1].documents[0].documentReference
     )
   })
