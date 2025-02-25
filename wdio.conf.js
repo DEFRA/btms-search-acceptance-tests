@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { init, getHtmlReportByCategory } from "./dist/wcagchecker.cjs";
+// import { init, getHtmlReportByCategory } from "./dist/wcagchecker.cjs";
 
 const oneMinute = 60 * 1000;
 
@@ -19,8 +19,8 @@ if (process.env.ENVIRONMENT === "local") {
   throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"dev|local|test|exttest|perf\"");
 }
 
-let chromeProxyConfig = {}
 
+let chromeProxyConfig = {}
 if (process.env.HTTP_PROXY) {
   const url = new URL(process.env.HTTP_PROXY)
   chromeProxyConfig = {
@@ -38,22 +38,20 @@ export const config = {
   // Runner Configuration
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
-  runner: "local",
-
+  runner: 'local',
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-
-  // baseUrl: `https://btms-search-acceptance-tests.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
   baseUrl,
+
   // Connection to remote chromedriver
-  // hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
-  // port: process.env.CHROMEDRIVER_PORT || 4444,
+  hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
+  port: process.env.CHROMEDRIVER_PORT || 4444,
 
   // Tests to run
-  specs: ["./test/specs/**/*.js"],
+  specs: ['./test/specs/**/*.js'],
   // Tests to exclude
   exclude: [],
   maxInstances: 1,
@@ -84,23 +82,22 @@ export const config = {
     }
   ],
 
-  execArgv: ["--loader", "esm-module-alias/loader"],
+  execArgv: ['--loader', 'esm-module-alias/loader'],
 
-  logLevel: "info",
+  logLevel: 'info',
 
   // Number of failures before the test suite bails.
   bail: 0,
   waitforTimeout: 10000,
   waitforInterval: 200,
-  connectionRetryTimeout: 120000,
+  connectionRetryTimeout: 6000,
   connectionRetryCount: 3,
-
-  framework: "mocha",
+  framework: 'mocha',
 
   reporters: [
     [
       // Spec reporter provides rolling output to the logger so you can see it in-progress
-      "spec",
+      'spec',
       {
         addConsoleLogs: true,
         realtimeReporting: true,
@@ -109,9 +106,9 @@ export const config = {
     ],
     [
       // Allure is used to generate the final HTML report
-      "allure",
+      'allure',
       {
-        outputDir: "allure-results"
+        outputDir: 'allure-results'
       }
     ]
   ],
@@ -119,7 +116,7 @@ export const config = {
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
-    ui: "bdd",
+    ui: 'bdd',
     timeout: oneMinute
   },
   //
@@ -210,26 +207,14 @@ export const config = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-
-  beforeSuite: async function() {
-    await init();
-  },
-
-  afterTest: async function(
+  afterTest: async function (
     test,
     context,
     { error, result, duration, passed, retries }
   ) {
     if (error) {
-      await browser.takeScreenshot();
+      await browser.takeScreenshot()
     }
-  },
-
-  async after() {
-    fs.writeFileSync("./allure-results/report.html", getHtmlReportByCategory(), (err) => {
-      // In case of a error throw err.
-      if (err) throw err;
-    });
   },
 
   /**
@@ -268,10 +253,10 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function(exitCode, config, capabilities, results) {
+  onComplete: function (exitCode, config, capabilities, results) {
     // !Do Not Remove! Required for test status to show correctly in portal.
     if (results?.failed && results.failed > 0) {
-      fs.writeFileSync("FAILED", JSON.stringify(results));
+      fs.writeFileSync('FAILED', JSON.stringify(results))
     }
   }
   /**
@@ -280,4 +265,4 @@ export const config = {
    * @param {string} newSessionId session ID of the new session
    */
   // onReload: function (oldSessionId, newSessionId) {}
-};
+}
