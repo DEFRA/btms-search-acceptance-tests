@@ -111,7 +111,7 @@ export const config = {
       // Allure is used to generate the final HTML report
       "allure",
       {
-        outputDir: "reports"
+        outputDir: "allure-results"
       }
     ]
   ],
@@ -226,7 +226,7 @@ export const config = {
   },
 
   async after() {
-    fs.writeFileSync("./reports/report.html", getHtmlReportByCategory(), (err) => {
+    fs.writeFileSync("./allure-results/report.html", getHtmlReportByCategory(), (err) => {
       // In case of a error throw err.
       if (err) throw err;
     });
