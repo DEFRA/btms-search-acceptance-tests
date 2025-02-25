@@ -6,7 +6,7 @@ const oneMinute = 60 * 1000;
 let baseUrl;
 
 if (process.env.ENVIRONMENT === "local") {
-  baseUrl = "http://localhost:8080";
+  baseUrl = "http://localhost:3000";
 } else if (process.env.ENVIRONMENT === "dev") {
   baseUrl = "https://btms-portal-frontend.dev.cdp-int.defra.cloud";
 } else if (process.env.ENVIRONMENT === "test") {
@@ -16,7 +16,20 @@ if (process.env.ENVIRONMENT === "local") {
 } else if (process.env.ENVIRONMENT === "perf") {
   baseUrl = "https://btms-portal-frontend.perf-test.cdp-int.defra.cloud";
 } else {
-  throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"local|test|exttest|perf\"");
+  throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"dev|local|test|exttest|perf\"");
+}
+
+let chromeProxyConfig = {}
+
+if (process.env.HTTP_PROXY) {
+  const url = new URL(process.env.HTTP_PROXY)
+  chromeProxyConfig = {
+    proxy: {
+      proxyType: 'manual',
+      httpProxy: `${url.host}:${url.port}`,
+      sslProxy: `${url.host}:${url.port}`
+    }
+  }
 }
 
 export const config = {
@@ -26,10 +39,6 @@ export const config = {
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: "local",
-
-  // Browserstack properties
-  user: process.env.BROWSERSTACK_USER,
-  key: process.env.BROWSERSTACK_KEY,
 
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
@@ -49,41 +58,30 @@ export const config = {
   exclude: [],
   maxInstances: 1,
 
-  commonCapabilities: {
-    "bstack:options": {
-      buildName: "browserstack-build-1" // configure as required
-    }
-  },
-
   capabilities: [
     {
-      browserName: "Chrome", // Set these to whatever combination of browsers you require
-      "bstack:options": {
-        browserVersion: "latest",
-        os: "Windows",
-        osVersion: "10"
+      ...chromeProxyConfig,
+      ...{
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          args: [
+            '--no-sandbox',
+            '--disable-infobars',
+            '--headless',
+            '--disable-gpu',
+            '--window-size=1920,1080',
+            '--enable-features=NetworkService,NetworkServiceInProcess',
+            '--password-store=basic',
+            '--use-mock-keychain',
+            '--dns-prefetch-disable',
+            '--disable-background-networking',
+            '--disable-remote-fonts',
+            '--ignore-certificate-errors',
+            '--disable-dev-shm-usage'
+          ]
+        }
       }
     }
-  ],
-
-  services: [
-    [
-      "browserstack",
-      {
-        testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
-        testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USER,
-          key: process.env.BROWSERSTACK_KEY,
-          projectName: "BTMS Search UI Tests",
-          buildName: "daily run"
-        },
-        acceptInsecureCerts: true,
-        forceLocal: true,
-        browserstackLocal: true,
-        proxyHost: "127.0.0.1",
-        proxyPort: 3128
-      }
-    ]
   ],
 
   execArgv: ["--loader", "esm-module-alias/loader"],
@@ -113,7 +111,7 @@ export const config = {
       // Allure is used to generate the final HTML report
       "allure",
       {
-        outputDir: "allure-results"
+        outputDir: "reports"
       }
     ]
   ],
@@ -228,7 +226,7 @@ export const config = {
   },
 
   async after() {
-    fs.writeFileSync("./accessibility-reports/report.html", getHtmlReportByCategory(), (err) => {
+    fs.writeFileSync("./reports/report.html", getHtmlReportByCategory(), (err) => {
       // In case of a error throw err.
       if (err) throw err;
     });

@@ -5,7 +5,7 @@ const oneMinute = 60 * 1000
 let baseUrl
 
 if (process.env.ENVIRONMENT === 'local'){
-  baseUrl = 'http://localhost:8080'
+  baseUrl = 'http://localhost:3000'
 } else if (process.env.ENVIRONMENT === 'dev'){
   baseUrl = 'https://btms-portal-frontend.dev.cdp-int.defra.cloud'
 } else if (process.env.ENVIRONMENT === 'test'){
@@ -58,7 +58,7 @@ export const config = {
       'bstack:options': {
         browserVersion: 'latest',
         os: 'Windows',
-        osVersion: '10'
+        osVersion: '11'
       }
     }
   ],
