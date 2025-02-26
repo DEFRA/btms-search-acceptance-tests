@@ -1,6 +1,6 @@
 import { Page } from "./page.js";
-import { $ } from '@wdio/globals'
-// import { analyse } from "../../dist/wcagchecker.cjs";
+import { browser, $ } from "@wdio/globals";
+import { analyse } from "../../dist/wcagchecker.cjs";
 
 class SearchPage extends Page {
   // getters
@@ -18,7 +18,7 @@ class SearchPage extends Page {
 
   // page object methods
   async searchFor(input) {
-    // await analyse(browser, "");
+    await analyse(browser, "");
     await this.searchTextBox.waitForExist({ timeout: 3000 });
     await this.searchButton.waitForClickable({ timeout: 3000 });
     await this.searchTextBox.setValue(input);
@@ -26,7 +26,7 @@ class SearchPage extends Page {
   }
 
   async searchClearedSearchField() {
-    // await analyse(browser, "");
+    await analyse(browser, "");
     await this.searchTextBox.waitForExist({ timeout: 3000 });
     await this.searchButton.waitForClickable({ timeout: 3000 });
     await this.searchTextBox.clearValue();
