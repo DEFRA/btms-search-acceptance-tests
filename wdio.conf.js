@@ -19,17 +19,18 @@ if (process.env.ENVIRONMENT === "local") {
   throw new Error("Invalid environment. Please provide en environment for the tests, e.g., \"dev|local|test|exttest|perf\"");
 }
 
+console.log(" this is the base url: " + baseUrl);
 
-let chromeProxyConfig = {}
+let chromeProxyConfig = {};
 if (process.env.HTTP_PROXY) {
-  const url = new URL(process.env.HTTP_PROXY)
+  const url = new URL(process.env.HTTP_PROXY);
   chromeProxyConfig = {
     proxy: {
-      proxyType: 'manual',
+      proxyType: "manual",
       httpProxy: `${url.host}:${url.port}`,
       sslProxy: `${url.host}:${url.port}`
     }
-  }
+  };
 }
 
 export const config = {
@@ -38,7 +39,7 @@ export const config = {
   // Runner Configuration
   // ====================
   // WebdriverIO supports running e2e tests as well as unit and component tests.
-  runner: 'local',
+  runner: "local",
   //
   // Set a base URL in order to shorten url command calls. If your `url` parameter starts
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
@@ -47,11 +48,11 @@ export const config = {
   baseUrl,
 
   // Connection to remote chromedriver
-  hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',
+  hostname: process.env.CHROMEDRIVER_URL || "127.0.0.1",
   port: process.env.CHROMEDRIVER_PORT || 4444,
 
   // Tests to run
-  specs: ['./test/specs/**/*.js'],
+  specs: ["./test/specs/**/*.js"],
   // Tests to exclude
   exclude: [],
   maxInstances: 1,
@@ -60,31 +61,31 @@ export const config = {
     {
       ...chromeProxyConfig,
       ...{
-        browserName: 'chrome',
-        'goog:chromeOptions': {
+        browserName: "chrome",
+        "goog:chromeOptions": {
           args: [
-            '--no-sandbox',
-            '--disable-infobars',
-            '--headless',
-            '--disable-gpu',
-            '--window-size=1920,1080',
-            '--enable-features=NetworkService,NetworkServiceInProcess',
-            '--password-store=basic',
-            '--use-mock-keychain',
-            '--dns-prefetch-disable',
-            '--disable-background-networking',
-            '--disable-remote-fonts',
-            '--ignore-certificate-errors',
-            '--disable-dev-shm-usage'
+            "--no-sandbox",
+            "--disable-infobars",
+            "--headless",
+            "--disable-gpu",
+            "--window-size=1920,1080",
+            "--enable-features=NetworkService,NetworkServiceInProcess",
+            "--password-store=basic",
+            "--use-mock-keychain",
+            "--dns-prefetch-disable",
+            "--disable-background-networking",
+            "--disable-remote-fonts",
+            "--ignore-certificate-errors",
+            "--disable-dev-shm-usage"
           ]
         }
       }
     }
   ],
 
-  execArgv: ['--loader', 'esm-module-alias/loader'],
+  execArgv: ["--loader", "esm-module-alias/loader"],
 
-  logLevel: 'info',
+  logLevel: "info",
 
   // Number of failures before the test suite bails.
   bail: 0,
@@ -92,12 +93,12 @@ export const config = {
   waitforInterval: 200,
   connectionRetryTimeout: 6000,
   connectionRetryCount: 3,
-  framework: 'mocha',
+  framework: "mocha",
 
   reporters: [
     [
       // Spec reporter provides rolling output to the logger so you can see it in-progress
-      'spec',
+      "spec",
       {
         addConsoleLogs: true,
         realtimeReporting: true,
@@ -106,9 +107,9 @@ export const config = {
     ],
     [
       // Allure is used to generate the final HTML report
-      'allure',
+      "allure",
       {
-        outputDir: 'allure-results'
+        outputDir: "allure-results"
       }
     ]
   ],
@@ -116,7 +117,7 @@ export const config = {
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
-    ui: 'bdd',
+    ui: "bdd",
     timeout: oneMinute
   },
   //
@@ -207,13 +208,13 @@ export const config = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  afterTest: async function (
+  afterTest: async function(
     test,
     context,
     { error, result, duration, passed, retries }
   ) {
     if (error) {
-      await browser.takeScreenshot()
+      await browser.takeScreenshot();
     }
   },
 
@@ -253,10 +254,10 @@ export const config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    * @param {<Object>} results object containing test results
    */
-  onComplete: function (exitCode, config, capabilities, results) {
+  onComplete: function(exitCode, config, capabilities, results) {
     // !Do Not Remove! Required for test status to show correctly in portal.
     if (results?.failed && results.failed > 0) {
-      fs.writeFileSync('FAILED', JSON.stringify(results))
+      fs.writeFileSync("FAILED", JSON.stringify(results));
     }
   }
   /**
@@ -265,4 +266,4 @@ export const config = {
    * @param {string} newSessionId session ID of the new session
    */
   // onReload: function (oldSessionId, newSessionId) {}
-}
+};
