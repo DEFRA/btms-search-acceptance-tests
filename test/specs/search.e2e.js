@@ -1,6 +1,6 @@
 import { browser, expect } from "@wdio/globals";
 import SearchPage from "../page-objects/search.page";
-import SearchResultsPage from "../page-objects/search_results.page";
+// import SearchResultsPage from "../page-objects/search_results.page";
 // import noMatch from "../../data/movement/nomatch.json";
 
 describe("Search page", () => {

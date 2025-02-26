@@ -1,4 +1,5 @@
 import { Page } from "./page.js";
+import { $ } from '@wdio/globals'
 // import { analyse } from "../../dist/wcagchecker.cjs";
 
 class SearchPage extends Page {
