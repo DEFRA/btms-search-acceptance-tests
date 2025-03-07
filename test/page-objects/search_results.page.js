@@ -1,6 +1,6 @@
 import { Page } from "./page.js";
-// import { analyse } from "../../dist/wcagchecker.cjs";
-// import { browser } from "@wdio/globals";
+import { analyse } from "../../dist/wcagchecker.cjs";
+import { browser } from "@wdio/globals";
 import { $, $$ } from '@wdio/globals'
 
 class SearchResultsPage extends Page {
@@ -79,7 +79,7 @@ class SearchResultsPage extends Page {
   }
 
   async commonItemCollector(locator) {
-    // await analyse(browser, "");
+    await analyse(browser, "");
     const items = []
     const locators = await $$(
       locator
