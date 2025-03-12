@@ -38,6 +38,11 @@ class SearchPage extends Page {
     return Object.values(await this.searchError.getText()).join("");
   }
 
+  async isSearchTextBoxDisplayed() {
+    await this.searchTextBox.waitForDisplayed({ timeout: 3000 });
+    return this.searchTextBox.isDisplayed();
+  }
+
   open() {
     return super.open("/search");
   }
